@@ -13,22 +13,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-type Organization = {
-  id: string
-  name: string
-}
-
-// Placeholder organizations
-const organizations: Organization[] = [
-  { id: "1", name: "Acme Properties" },
-  { id: "2", name: "Skyline Rentals" },
-  { id: "3", name: "Urban Living" },
-]
+import { useAuthStore } from "@/lib/auth-store"
 
 export function OrgSwitcher() {
   const [open, setOpen] = React.useState(false)
-  const [selectedOrg, setSelectedOrg] = React.useState<Organization>(organizations[0])
+  const { organizations, currentOrganization, setCurrentOrganization } = useAuthStore()
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -39,7 +28,7 @@ export function OrgSwitcher() {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {selectedOrg.name}
+          {currentOrganization?.name || "Select organization"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
@@ -50,24 +39,24 @@ export function OrgSwitcher() {
           <DropdownMenuItem
             key={org.id}
             onClick={() => {
-              setSelectedOrg(org)
+              setCurrentOrganization(org)
               setOpen(false)
             }}
           >
             <Check
               className={cn(
                 "mr-2 h-4 w-4",
-                selectedOrg.id === org.id ? "opacity-100" : "opacity-0"
+                currentOrganization?.id === org.id ? "opacity-100" : "opacity-0"
               )}
             />
             {org.name}
+            {org.role && (
+              <span className="ml-auto text-xs text-muted-foreground">
+                {org.role}
+              </span>
+            )}
           </DropdownMenuItem>
         ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Create organization
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

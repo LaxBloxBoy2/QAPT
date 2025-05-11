@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QAPT Property Management Platform
+
+A comprehensive SaaS platform for property management built with Next.js 14, TypeScript, Tailwind CSS, ShadCN UI, and Supabase.
+
+## Features
+
+- **Modern Tech Stack**: Next.js 14 (App Router), TypeScript, Tailwind CSS, ShadCN UI
+- **Authentication**: Supabase Auth with role-based access control
+- **Database**: Supabase PostgreSQL with Row-Level Security
+- **Responsive Design**: Mobile-friendly layout with collapsible sidebar
+- **Dark/Light Theme**: Theme toggle with localStorage persistence
+- **Organization Management**: Switch between multiple organizations
+- **Protected Routes**: Middleware for authentication and authorization
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and npm
+- Supabase account and project
+
+### Environment Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/LaxBloxBoy2/QAPT.git
+cd QAPT
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create a `.env.local` file in the root directory with your Supabase credentials:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://wowmsuvnokexqyuksweh.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indvd21zdXZub2tleHF5dWtzd2VoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY5MjgwMDksImV4cCI6MjA2MjUwNDAwOX0.k64s1Gk57Cy5QzshqQ4a1obFEIslfH4ayTzxSiKI61k
+```
+
+4. Set up the Supabase database schema:
+
+- Go to the Supabase dashboard for your project
+- Navigate to the SQL Editor
+- Copy the contents of `supabase/schema.sql` and run it
+
+5. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database Schema
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application uses the following tables:
 
-## Learn More
+- **organizations**: Property management companies
+- **properties**: Buildings or complexes managed by organizations
+- **units**: Individual rental units within properties
+- **tenants**: People renting units
+- **leases**: Contracts between tenants and units
+- **user_organizations**: Many-to-many relationship between users and organizations with roles
 
-To learn more about Next.js, take a look at the following resources:
+## Row-Level Security
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application implements Row-Level Security (RLS) policies in Supabase to ensure users can only access data from their organizations:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Users can only view organizations they belong to
+- Users can only view properties, units, tenants, and leases in their organizations
+- Only admins can create new organizations
+- Only admins and managers can create/update properties
 
-## Deploy on Vercel
+## Authentication Flow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Users sign up or sign in through the `/auth` routes
+2. Upon successful authentication, users are redirected to the dashboard
+3. Users can only access data from organizations they belong to
+4. Users can switch between organizations using the organization switcher
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project Structure
+
+- `/app`: Next.js App Router pages and layouts
+- `/components`: Reusable UI components
+- `/lib`: Utility functions, hooks, and services
+- `/public`: Static assets
+- `/supabase`: Database schema and migrations
