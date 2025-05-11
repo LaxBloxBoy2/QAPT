@@ -10,15 +10,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LogOut, Settings, User } from "lucide-react"
-import { useAuthStore } from "@/lib/auth-store"
+import { useUser } from "@/lib/user-context"
 
 export function UserAvatarMenu() {
-  const { user, signOut } = useAuthStore()
+  const { user, profile, signOut } = useUser()
 
   // Get user initials for avatar fallback
   const getUserInitials = () => {
-    if (!user?.email) return "U";
-    return user.email.charAt(0).toUpperCase();
+    if (profile?.full_name) {
+      const nameParts = profile.full_name.split(' ');
+      if (nameParts.length > 1) {
+        return `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+      }
+      return profile.full_name[0].toUpperCase();
+    }
+    if (user?.email) return user.email[0].toUpperCase();
+    return "U";
   };
   return (
     <DropdownMenu>
@@ -30,7 +37,7 @@ export function UserAvatarMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>
-          {user?.email || 'My Account'}
+          {profile?.full_name || user?.email || 'My Account'}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

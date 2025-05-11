@@ -2,26 +2,27 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useAuthStore } from "@/lib/auth-store"
+import { useUser } from "@/lib/user-context"
 import { Button } from "@/components/ui/button"
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("")
+  const [fullName, setFullName] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [passwordError, setPasswordError] = useState("")
-  const { signUp, error, isLoading } = useAuthStore()
+  const { signUp, error, isLoading } = useUser()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (password !== confirmPassword) {
       setPasswordError("Passwords do not match")
       return
     }
-    
+
     setPasswordError("")
-    await signUp(email, password)
+    await signUp(email, password, fullName)
   }
 
   return (
@@ -39,6 +40,20 @@ export default function SignUpPage() {
             {error}
           </div>
         )}
+
+        <div className="space-y-2">
+          <label htmlFor="fullName" className="text-sm font-medium">
+            Full Name
+          </label>
+          <input
+            id="fullName"
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+        </div>
 
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium">

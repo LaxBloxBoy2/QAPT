@@ -1,14 +1,45 @@
 "use client"
 
-import { Building2, Loader2 } from "lucide-react"
+import { Building2, Loader2, Home, Building, Factory, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useProperties } from "@/lib/query-hooks"
-import { useAuthStore } from "@/lib/auth-store"
+import { useProperties } from "@/lib/hooks/use-properties"
+import { useUser } from "@/lib/user-context"
 import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
 
 export default function PropertiesPage() {
-  const { currentOrganization } = useAuthStore()
+  const { profile } = useUser()
   const { data: properties, isLoading, error } = useProperties()
+
+  // Helper function to get icon based on property type
+  const getPropertyTypeIcon = (type?: string) => {
+    switch (type) {
+      case 'Residential':
+        return <Home className="h-4 w-4" />;
+      case 'Commercial':
+        return <Building className="h-4 w-4" />;
+      case 'Industrial':
+        return <Factory className="h-4 w-4" />;
+      default:
+        return <Building2 className="h-4 w-4" />;
+    }
+  }
+
+  // Helper function to get badge color based on status
+  const getStatusBadgeVariant = (status?: string) => {
+    switch (status) {
+      case 'Active':
+        return 'default';
+      case 'Under Maintenance':
+        return 'warning';
+      case 'Vacant':
+        return 'secondary';
+      case 'Fully Occupied':
+        return 'success';
+      default:
+        return 'outline';
+    }
+  }
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -26,9 +57,9 @@ export default function PropertiesPage() {
         <div className="rounded-lg border border-destructive/50 p-6 text-center text-destructive">
           <p>Error loading properties. Please try again.</p>
         </div>
-      ) : !currentOrganization ? (
+      ) : !profile?.organization_id ? (
         <div className="rounded-lg border p-6 text-center">
-          <p className="text-muted-foreground">Please select an organization to view properties.</p>
+          <p className="text-muted-foreground">You are not associated with any organization.</p>
         </div>
       ) : properties?.length === 0 ? (
         <div className="rounded-lg border p-6 text-center">
@@ -41,14 +72,19 @@ export default function PropertiesPage() {
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {properties?.map((property) => (
                 <div key={property.id} className="rounded-lg border p-4">
-                  <h3 className="text-lg font-medium">{property.name}</h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-medium">{property.name}</h3>
+                    <Badge variant={getStatusBadgeVariant(property.status)}>
+                      {property.status}
+                    </Badge>
+                  </div>
                   <p className="text-sm text-muted-foreground">
                     {property.address}, {property.city}, {property.state} {property.zip}
                   </p>
                   <div className="mt-4 flex items-center justify-between">
-                    <div>
-                      {/* We would need to fetch units count from the API */}
-                      <p className="text-sm">Property ID: {property.id.substring(0, 8)}</p>
+                    <div className="flex items-center gap-2">
+                      {getPropertyTypeIcon(property.type)}
+                      <span className="text-sm">{property.type}</span>
                     </div>
                     <Link href={`/properties/${property.id}`}>
                       <Button variant="outline" size="sm">View</Button>

@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useAuthStore } from "@/lib/auth-store"
+import { useUser } from "@/lib/user-context"
 import { Button } from "@/components/ui/button"
 
 export default function SignInPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const { signIn, error, isLoading } = useAuthStore()
+  const { signIn, error, isLoading } = useUser()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

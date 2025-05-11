@@ -55,6 +55,16 @@ CREATE TABLE IF NOT EXISTS user_organizations (
   UNIQUE (user_id, organization_id)
 );
 
+CREATE TABLE IF NOT EXISTS user_profiles (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  organization_id UUID REFERENCES organizations(id) ON DELETE SET NULL,
+  role TEXT CHECK (role IN ('admin', 'manager', 'tenant')),
+  full_name TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE (user_id)
+);
+
 -- Enable Row Level Security
 ALTER TABLE organizations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE properties ENABLE ROW LEVEL SECURITY;
@@ -62,133 +72,158 @@ ALTER TABLE units ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tenants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE leases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_organizations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
 -- Create policies for organizations
-CREATE POLICY "Users can view organizations they belong to" 
-  ON organizations FOR SELECT 
+CREATE POLICY "Users can view organizations they belong to"
+  ON organizations FOR SELECT
   USING (
     id IN (
-      SELECT organization_id FROM user_organizations 
+      SELECT organization_id FROM user_organizations
       WHERE user_id = auth.uid()
     )
   );
 
-CREATE POLICY "Admins can insert organizations" 
-  ON organizations FOR INSERT 
+CREATE POLICY "Admins can insert organizations"
+  ON organizations FOR INSERT
   WITH CHECK (
     EXISTS (
-      SELECT 1 FROM user_organizations 
-      WHERE user_id = auth.uid() 
+      SELECT 1 FROM user_organizations
+      WHERE user_id = auth.uid()
       AND role = 'admin'
     )
   );
 
-CREATE POLICY "Admins can update their organizations" 
-  ON organizations FOR UPDATE 
+CREATE POLICY "Admins can update their organizations"
+  ON organizations FOR UPDATE
   USING (
     EXISTS (
-      SELECT 1 FROM user_organizations 
-      WHERE user_id = auth.uid() 
-      AND organization_id = organizations.id 
+      SELECT 1 FROM user_organizations
+      WHERE user_id = auth.uid()
+      AND organization_id = organizations.id
       AND role = 'admin'
     )
   );
 
 -- Create policies for properties
-CREATE POLICY "Users can view properties in their organizations" 
-  ON properties FOR SELECT 
+CREATE POLICY "Users can view properties in their organizations"
+  ON properties FOR SELECT
   USING (
     organization_id IN (
-      SELECT organization_id FROM user_organizations 
+      SELECT organization_id FROM user_organizations
       WHERE user_id = auth.uid()
     )
   );
 
-CREATE POLICY "Admins and managers can insert properties" 
-  ON properties FOR INSERT 
+CREATE POLICY "Admins and managers can insert properties"
+  ON properties FOR INSERT
   WITH CHECK (
     organization_id IN (
-      SELECT organization_id FROM user_organizations 
-      WHERE user_id = auth.uid() 
+      SELECT organization_id FROM user_organizations
+      WHERE user_id = auth.uid()
       AND role IN ('admin', 'manager')
     )
   );
 
-CREATE POLICY "Admins and managers can update properties in their organizations" 
-  ON properties FOR UPDATE 
+CREATE POLICY "Admins and managers can update properties in their organizations"
+  ON properties FOR UPDATE
   USING (
     organization_id IN (
-      SELECT organization_id FROM user_organizations 
-      WHERE user_id = auth.uid() 
+      SELECT organization_id FROM user_organizations
+      WHERE user_id = auth.uid()
       AND role IN ('admin', 'manager')
     )
   );
 
 -- Create policies for units
-CREATE POLICY "Users can view units in their organizations" 
-  ON units FOR SELECT 
+CREATE POLICY "Users can view units in their organizations"
+  ON units FOR SELECT
   USING (
     property_id IN (
-      SELECT id FROM properties 
+      SELECT id FROM properties
       WHERE organization_id IN (
-        SELECT organization_id FROM user_organizations 
+        SELECT organization_id FROM user_organizations
         WHERE user_id = auth.uid()
       )
     )
   );
 
 -- Create policies for tenants
-CREATE POLICY "Users can view tenants in their organizations" 
-  ON tenants FOR SELECT 
+CREATE POLICY "Users can view tenants in their organizations"
+  ON tenants FOR SELECT
   USING (
     organization_id IN (
-      SELECT organization_id FROM user_organizations 
+      SELECT organization_id FROM user_organizations
       WHERE user_id = auth.uid()
     )
   );
 
 -- Create policies for leases
-CREATE POLICY "Users can view leases in their organizations" 
-  ON leases FOR SELECT 
+CREATE POLICY "Users can view leases in their organizations"
+  ON leases FOR SELECT
   USING (
     tenant_id IN (
-      SELECT id FROM tenants 
+      SELECT id FROM tenants
       WHERE organization_id IN (
-        SELECT organization_id FROM user_organizations 
+        SELECT organization_id FROM user_organizations
         WHERE user_id = auth.uid()
       )
     )
   );
 
 -- Create policies for user_organizations
-CREATE POLICY "Users can view their own organization memberships" 
-  ON user_organizations FOR SELECT 
+CREATE POLICY "Users can view their own organization memberships"
+  ON user_organizations FOR SELECT
   USING (
-    user_id = auth.uid() OR 
+    user_id = auth.uid() OR
     organization_id IN (
-      SELECT organization_id FROM user_organizations 
-      WHERE user_id = auth.uid() 
+      SELECT organization_id FROM user_organizations
+      WHERE user_id = auth.uid()
       AND role = 'admin'
     )
   );
 
-CREATE POLICY "Admins can manage user_organizations" 
-  ON user_organizations FOR ALL 
+CREATE POLICY "Admins can manage user_organizations"
+  ON user_organizations FOR ALL
   USING (
     organization_id IN (
-      SELECT organization_id FROM user_organizations 
-      WHERE user_id = auth.uid() 
+      SELECT organization_id FROM user_organizations
+      WHERE user_id = auth.uid()
       AND role = 'admin'
     )
+  );
+
+-- Create policies for user_profiles
+CREATE POLICY "Users can view their own profile"
+  ON user_profiles FOR SELECT
+  USING (
+    user_id = auth.uid() OR
+    organization_id IN (
+      SELECT organization_id FROM user_organizations
+      WHERE user_id = auth.uid()
+      AND role IN ('admin', 'manager')
+    )
+  );
+
+CREATE POLICY "Users can update their own profile"
+  ON user_profiles FOR UPDATE
+  USING (
+    user_id = auth.uid()
+  );
+
+CREATE POLICY "Users can insert their own profile"
+  ON user_profiles FOR INSERT
+  WITH CHECK (
+    user_id = auth.uid()
   );
 
 -- Create sample data
-INSERT INTO organizations (id, name) VALUES 
+INSERT INTO organizations (id, name) VALUES
   ('11111111-1111-1111-1111-111111111111', 'Acme Properties'),
   ('22222222-2222-2222-2222-222222222222', 'Skyline Rentals'),
   ('33333333-3333-3333-3333-333333333333', 'Urban Living');
 
-INSERT INTO properties (id, name, address, city, state, zip, organization_id) VALUES 
+INSERT INTO properties (id, name, address, city, state, zip, organization_id) VALUES
   ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Skyline Apartments', '123 Main St', 'New York', 'NY', '10001', '11111111-1111-1111-1111-111111111111'),
   ('bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb', 'Parkview Residences', '456 Park Ave', 'Chicago', 'IL', '60601', '11111111-1111-1111-1111-111111111111'),
   ('cccccccc-cccc-cccc-cccc-cccccccccccc', 'Urban Heights', '789 Broadway', 'Los Angeles', 'CA', '90001', '22222222-2222-2222-2222-222222222222');

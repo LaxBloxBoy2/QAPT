@@ -13,11 +13,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useAuthStore } from "@/lib/auth-store"
+import { useUser } from "@/lib/user-context"
 
 export function OrgSwitcher() {
   const [open, setOpen] = React.useState(false)
-  const { organizations, currentOrganization, setCurrentOrganization } = useAuthStore()
+  const { profile } = useUser()
+
+  // This is a placeholder since we don't have organization switching in our UserContext yet
+  // In a real app, you would implement this functionality
+  const organizations = []
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -28,35 +32,18 @@ export function OrgSwitcher() {
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {currentOrganization?.name || "Select organization"}
+          {profile?.organization_id ? "Your Organization" : "No Organization"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[200px]">
         <DropdownMenuLabel>Organizations</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {organizations.map((org) => (
-          <DropdownMenuItem
-            key={org.id}
-            onClick={() => {
-              setCurrentOrganization(org)
-              setOpen(false)
-            }}
-          >
-            <Check
-              className={cn(
-                "mr-2 h-4 w-4",
-                currentOrganization?.id === org.id ? "opacity-100" : "opacity-0"
-              )}
-            />
-            {org.name}
-            {org.role && (
-              <span className="ml-auto text-xs text-muted-foreground">
-                {org.role}
-              </span>
-            )}
-          </DropdownMenuItem>
-        ))}
+        <DropdownMenuItem disabled>
+          {profile?.organization_id
+            ? "You are part of an organization"
+            : "You are not part of any organization"}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
