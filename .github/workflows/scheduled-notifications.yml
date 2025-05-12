@@ -1,0 +1,42 @@
+name: Scheduled Notifications
+
+on:
+  schedule:
+    # Run at 8:00 AM UTC every day
+    - cron: '0 8 * * *'
+  # Allow manual triggering for testing
+  workflow_dispatch:
+
+jobs:
+  run-notification-functions:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm install -g @supabase/cli
+      
+      - name: Check lease expiry
+        run: |
+          curl -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/check-lease-expiry" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+          -H "Content-Type: application/json"
+      
+      - name: Check unpaid rent
+        run: |
+          curl -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/check-unpaid-rent" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+          -H "Content-Type: application/json"
+      
+      - name: Check stale maintenance requests
+        run: |
+          curl -X POST "${{ secrets.SUPABASE_URL }}/functions/v1/check-stale-maintenance" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+          -H "Content-Type: application/json"
