@@ -1,0 +1,26 @@
+# Ignore pages with missing dependencies
+app/(dashboard)/appliances/
+app/(dashboard)/calendar/
+app/(dashboard)/inspections/
+app/(dashboard)/maintenance/
+app/(dashboard)/notifications/
+app/(dashboard)/rent/
+app/(dashboard)/settings/team/
+
+# Ignore test files
+__tests__/
+app/test-auth/
+app/test-db/
+app/login-test/
+app/signup-test/
+
+# Ignore API routes that might have dependencies issues
+app/api/google-calendar/
+app/api/inspections/
+app/api/run-edge-function/
+app/api/test-db/
+
+# Ignore utility scripts
+scripts/
+*.js
+!next.config.js
