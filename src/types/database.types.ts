@@ -21,10 +21,28 @@ export type CustomRole = {
 export type Property = {
   id: string
   owner_id: string
-  title: string
-  address: string
-  unit_count: number
+  name: string
+  street: string
+  city: string
+  state: string
+  zip: string
+  country: string
+  year_built?: number
+  mls_number?: string
+  type: 'single' | 'multi'
+  manufactured?: boolean
+  beds?: number
+  baths?: number
+  size_sqft?: number
+  market_rent?: number
+  deposit?: number
+  amenities?: string[]
+  features?: string[]
+  attachments?: string[]
+  images?: string[]
   created_at: string
+  occupancy_percentage?: number
+  balance?: number
 }
 
 export type RoleAssignment = {

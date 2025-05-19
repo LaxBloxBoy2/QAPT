@@ -71,21 +71,70 @@ export async function createProperty(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  const title = formData.get('title') as string
-  const address = formData.get('address') as string
-  const unitCount = parseInt(formData.get('unitCount') as string) || 1
+  // Basic information
+  const name = formData.get('name') as string
+  const street = formData.get('street') as string
+  const city = formData.get('city') as string
+  const state = formData.get('state') as string
+  const zip = formData.get('zip') as string
+  const country = formData.get('country') as string
+  const yearBuilt = formData.get('yearBuilt') ? parseInt(formData.get('yearBuilt') as string) : undefined
+  const mlsNumber = formData.get('mlsNumber') as string || undefined
 
-  if (!title || !address) {
-    throw new Error('Title and address are required')
+  // Property type
+  const type = formData.get('type') as 'single' | 'multi'
+
+  // Property details
+  const beds = formData.get('beds') ? parseInt(formData.get('beds') as string) : undefined
+  const baths = formData.get('baths') ? parseInt(formData.get('baths') as string) : undefined
+  const sizeSqft = formData.get('sizeSqft') ? parseFloat(formData.get('sizeSqft') as string) : undefined
+  const marketRent = formData.get('marketRent') ? parseFloat(formData.get('marketRent') as string) : undefined
+  const deposit = formData.get('deposit') ? parseFloat(formData.get('deposit') as string) : undefined
+
+  // Additional details
+  const manufactured = formData.get('manufactured') === 'true'
+
+  // Features and amenities
+  const featuresJson = formData.get('features') as string
+  const amenitiesJson = formData.get('amenities') as string
+  const features = featuresJson ? JSON.parse(featuresJson) : []
+  const amenities = amenitiesJson ? JSON.parse(amenitiesJson) : []
+
+  // Images and documents
+  const imagesJson = formData.get('images') as string
+  const attachmentsJson = formData.get('attachments') as string
+  const images = imagesJson ? JSON.parse(imagesJson) : []
+  const attachments = attachmentsJson ? JSON.parse(attachmentsJson) : []
+
+  if (!name || !street || !city || !state || !zip || !country) {
+    throw new Error('Name and address fields are required')
   }
 
   const { data, error } = await supabase
     .from('properties')
     .insert({
       owner_id: user.id,
-      title,
-      address,
-      unit_count: unitCount,
+      name,
+      street,
+      city,
+      state,
+      zip,
+      country,
+      year_built: yearBuilt,
+      mls_number: mlsNumber,
+      type,
+      manufactured,
+      beds,
+      baths,
+      size_sqft: sizeSqft,
+      market_rent: marketRent,
+      deposit,
+      amenities,
+      features,
+      attachments,
+      images,
+      occupancy_percentage: 0, // Default value
+      balance: 0 // Default value
     })
     .select()
     .single()
@@ -111,20 +160,67 @@ export async function updateProperty(id: string, formData: FormData) {
     throw new Error('Not authorized to update this property')
   }
 
-  const title = formData.get('title') as string
-  const address = formData.get('address') as string
-  const unitCount = parseInt(formData.get('unitCount') as string) || 1
+  // Basic information
+  const name = formData.get('name') as string
+  const street = formData.get('street') as string
+  const city = formData.get('city') as string
+  const state = formData.get('state') as string
+  const zip = formData.get('zip') as string
+  const country = formData.get('country') as string
+  const yearBuilt = formData.get('yearBuilt') ? parseInt(formData.get('yearBuilt') as string) : undefined
+  const mlsNumber = formData.get('mlsNumber') as string || undefined
 
-  if (!title || !address) {
-    throw new Error('Title and address are required')
+  // Property type
+  const type = formData.get('type') as 'single' | 'multi'
+
+  // Property details
+  const beds = formData.get('beds') ? parseInt(formData.get('beds') as string) : undefined
+  const baths = formData.get('baths') ? parseInt(formData.get('baths') as string) : undefined
+  const sizeSqft = formData.get('sizeSqft') ? parseFloat(formData.get('sizeSqft') as string) : undefined
+  const marketRent = formData.get('marketRent') ? parseFloat(formData.get('marketRent') as string) : undefined
+  const deposit = formData.get('deposit') ? parseFloat(formData.get('deposit') as string) : undefined
+
+  // Additional details
+  const manufactured = formData.get('manufactured') === 'true'
+
+  // Features and amenities
+  const featuresJson = formData.get('features') as string
+  const amenitiesJson = formData.get('amenities') as string
+  const features = featuresJson ? JSON.parse(featuresJson) : []
+  const amenities = amenitiesJson ? JSON.parse(amenitiesJson) : []
+
+  // Images and documents
+  const imagesJson = formData.get('images') as string
+  const attachmentsJson = formData.get('attachments') as string
+  const images = imagesJson ? JSON.parse(imagesJson) : []
+  const attachments = attachmentsJson ? JSON.parse(attachmentsJson) : []
+
+  if (!name || !street || !city || !state || !zip || !country) {
+    throw new Error('Name and address fields are required')
   }
 
   const { error } = await supabase
     .from('properties')
     .update({
-      title,
-      address,
-      unit_count: unitCount,
+      name,
+      street,
+      city,
+      state,
+      zip,
+      country,
+      year_built: yearBuilt,
+      mls_number: mlsNumber,
+      type,
+      manufactured,
+      beds,
+      baths,
+      size_sqft: sizeSqft,
+      market_rent: marketRent,
+      deposit,
+      amenities,
+      features,
+      attachments,
+      images
     })
     .eq('id', id)
 
