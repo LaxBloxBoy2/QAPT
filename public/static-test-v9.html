@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Test - Version 9</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: blue;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .info-box {
+            background-color: orange;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .button {
+            background-color: white;
+            color: blue;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .debug-box {
+            background-color: navy;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+            width: 100%;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>STATIC HTML TEST - VERSION 9</h1>
+    
+    <div class="info-box">
+        <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 10px;">
+            If you can see this page with a BLUE background and ORANGE box, the deployment is working!
+        </p>
+        <p style="font-size: 1.2rem; margin-bottom: 10px;">
+            Version: 9 - Static HTML Test
+        </p>
+        <p style="font-size: 1.2rem; margin-bottom: 10px;">
+            Timestamp: 2024-05-20 02:00:00
+        </p>
+    </div>
+    
+    <div>
+        <a href="/" class="button">Go to Home</a>
+        <a href="/dashboard" class="button">Go to Dashboard</a>
+        <a href="/final-test-v9" class="button">Go to Final Test</a>
+    </div>
+
+    <div class="debug-box">
+        <h2>Debug Information</h2>
+        <p>This is a static HTML file in the public directory.</p>
+        <p>If you can see this page but not the other pages, there might be an issue with the Next.js build.</p>
+        <p>Try visiting this URL directly: /static-test-v9.html</p>
+    </div>
+
+    <script>
+        // Display the current URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoBox = document.querySelector('.info-box');
+            const urlParagraph = document.createElement('p');
+            urlParagraph.innerHTML = `<strong>Current URL:</strong> ${window.location.href}`;
+            infoBox.appendChild(urlParagraph);
+        });
+    </script>
+</body>
+</html>
