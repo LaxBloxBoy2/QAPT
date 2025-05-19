@@ -1,0 +1,8 @@
+This file is created to force a completely new deployment on Vercel.
+Timestamp: 2024-05-20 03:00:00
+Version: 11
+Complete Restructuring:
+- Created new app directory structure with plain JavaScript files
+- Removed all dependencies on Tailwind and PostCSS
+- Created simple pages with inline styles
+- Simplified the entire project structure
