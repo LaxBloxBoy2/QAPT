@@ -52,7 +52,7 @@ type RoleAssignmentWithJoins = {
 
 // Get user's role for a specific property
 export async function getUserRoleForProperty(userId: string, propertyId: string) {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data: roleAssignment, error } = await supabase
     .from('role_assignments')
@@ -107,7 +107,7 @@ export async function hasPermission(
 
 // Check if user is the owner of a property
 export async function isPropertyOwner(userId: string, propertyId: string): Promise<boolean> {
-  const supabase = createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase
     .from('properties')
