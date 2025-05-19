@@ -1,14 +1,13 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "next build",
+  "buildCommand": "rm -rf .next && next build",
   "devCommand": "next dev",
   "installCommand": "npm install",
   "cleanUrls": true,
   "git": {
     "deploymentEnabled": {
-      "main": true,
-      "new-sidebar-layout": true
+      "main": true
     }
   }
 }
