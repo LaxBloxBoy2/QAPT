@@ -6,54 +6,30 @@ import { Button } from '@/components/ui/button'
 import { PropertyGrid } from '@/components/properties/property-grid'
 import { PropertyFilters } from '@/components/properties/property-filters'
 import { Plus, Upload } from 'lucide-react'
-import { Property } from '@/types/database.types'
+import { mockProperties } from '@/lib/mock-data'
 
 export default function PropertiesPage() {
-  const [properties, setProperties] = useState<Property[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    async function loadProperties() {
-      try {
-        setLoading(true)
+    setMounted(true)
 
-        // Use mock data instead of trying to fetch from Supabase
-        const { mockProperties } = await import('@/lib/mock-data')
+    // Simulate loading delay
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
 
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1000))
-
-        setProperties(mockProperties)
-        setLoading(false)
-      } catch (err) {
-        console.error('Error loading properties:', err)
-        setError('Failed to load properties')
-        setLoading(false)
-      }
-    }
-
-    loadProperties()
+    return () => clearTimeout(timer)
   }, [])
 
-  if (loading) {
+  // Don't render until mounted to avoid hydration issues
+  if (!mounted) return null
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="w-12 h-12 border-4 border-[#0a3622] border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 text-center">
-        <div className="text-red-500 mb-4">⚠️ {error}</div>
-        <Button
-          onClick={() => window.location.reload()}
-          className="bg-[#0a3622] hover:bg-[#0d4a2e] text-white"
-        >
-          Try Again
-        </Button>
       </div>
     )
   }
@@ -92,7 +68,7 @@ export default function PropertiesPage() {
         />
       </div>
 
-      <PropertyGrid properties={properties} />
+      <PropertyGrid properties={mockProperties} />
     </div>
   )
 }
