@@ -1,0 +1,8 @@
+This file is created to force a completely new deployment on Vercel.
+Timestamp: 2024-05-20 01:30:00
+Version: 8
+Fixed Build Errors:
+- Updated emergency page to use Next.js Link components
+- Updated home page to use Next.js Link components
+- Added 'use client' directive to both pages
+- Fixed ESLint errors that were causing build failures

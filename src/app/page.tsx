@@ -1,3 +1,7 @@
+'use client'
+
+import Link from 'next/link'
+
 export default function Home() {
   return (
     <div style={{
@@ -32,7 +36,7 @@ export default function Home() {
           If you can see this page with a PURPLE background and YELLOW box, the deployment is working!
         </p>
         <p style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
-          Version: 7 - Home Page Override
+          Version: 8 - Home Page (Fixed Links)
         </p>
         <p style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
           Timestamp: {new Date().toISOString()}
@@ -44,29 +48,31 @@ export default function Home() {
         gap: '20px',
         marginBottom: '20px'
       }}>
-        <a href="/dashboard" style={{
+        <Link href="/dashboard" style={{
           backgroundColor: 'white',
           color: 'purple',
           padding: '15px 30px',
           borderRadius: '5px',
           textDecoration: 'none',
           fontWeight: 'bold',
-          fontSize: '1.2rem'
+          fontSize: '1.2rem',
+          display: 'inline-block'
         }}>
           Go to Dashboard
-        </a>
+        </Link>
 
-        <a href="/emergency" style={{
+        <Link href="/emergency" style={{
           backgroundColor: 'red',
           color: 'white',
           padding: '15px 30px',
           borderRadius: '5px',
           textDecoration: 'none',
           fontWeight: 'bold',
-          fontSize: '1.2rem'
+          fontSize: '1.2rem',
+          display: 'inline-block'
         }}>
           Emergency Test Page
-        </a>
+        </Link>
       </div>
     </div>
   );

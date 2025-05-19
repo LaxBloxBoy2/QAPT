@@ -1,3 +1,7 @@
+'use client'
+
+import Link from 'next/link'
+
 export default function EmergencyPage() {
   return (
     <div style={{
@@ -18,7 +22,7 @@ export default function EmergencyPage() {
       }}>
         EMERGENCY TEST PAGE
       </h1>
-      
+
       <div style={{
         backgroundColor: 'yellow',
         color: 'black',
@@ -32,44 +36,43 @@ export default function EmergencyPage() {
           If you can see this page with a RED background and YELLOW box, the deployment is working!
         </p>
         <p style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
-          Version: 7 - Emergency Test
+          Version: 8 - Emergency Test (Fixed Links)
         </p>
         <p style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
           Timestamp: {new Date().toISOString()}
         </p>
-        <p style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
-          URL: {typeof window !== 'undefined' ? window.location.href : 'Server-side rendering'}
-        </p>
       </div>
-      
+
       <div style={{
         display: 'flex',
         gap: '20px',
         marginBottom: '20px'
       }}>
-        <a href="/" style={{
+        <Link href="/" style={{
           backgroundColor: 'white',
           color: 'red',
           padding: '10px 20px',
           borderRadius: '5px',
           textDecoration: 'none',
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          display: 'inline-block'
         }}>
           Go to Home
-        </a>
-        
-        <a href="/dashboard" style={{
+        </Link>
+
+        <Link href="/dashboard" style={{
           backgroundColor: 'white',
           color: 'red',
           padding: '10px 20px',
           borderRadius: '5px',
           textDecoration: 'none',
-          fontWeight: 'bold'
+          fontWeight: 'bold',
+          display: 'inline-block'
         }}>
           Go to Dashboard
-        </a>
+        </Link>
       </div>
-      
+
       <div style={{
         backgroundColor: 'black',
         color: 'white',
@@ -80,7 +83,7 @@ export default function EmergencyPage() {
       }}>
         <h2 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>Debug Information</h2>
         <p>This is a completely new page created as a last resort to test deployment.</p>
-        <p>It uses only inline styles and no external components.</p>
+        <p>It uses only inline styles and Next.js Link components.</p>
         <p>If you can see this page but not the sidebar layout, there might be an issue with the component structure.</p>
       </div>
     </div>
