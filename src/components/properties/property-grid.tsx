@@ -19,7 +19,7 @@ export function PropertyGrid({ properties }: PropertyGridProps) {
         </div>
         <h3 className="text-xl font-medium text-gray-700 dark:text-gray-300 mb-2">No properties found</h3>
         <p className="text-gray-500 max-w-md mx-auto mb-8">Add your first property to start managing your real estate portfolio</p>
-        <Button asChild size="lg" className="rounded-full">
+        <Button asChild size="lg" className="rounded-full bg-[#0a3622] hover:bg-[#0d4a2e] text-white">
           <Link href="/dashboard/properties/new" className="flex items-center gap-2">
             <Plus className="h-5 w-5" />
             Add Property

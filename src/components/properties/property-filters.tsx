@@ -80,7 +80,7 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
         </Button>
         <Button
           onClick={handleSearch}
-          className="h-12 rounded-full px-6"
+          className="h-12 rounded-full px-6 bg-[#0a3622] hover:bg-[#0d4a2e] text-white"
         >
           <Search className="h-5 w-5 mr-2" />
           Search
@@ -181,7 +181,7 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
             <div className="flex items-end">
               <Button
                 onClick={handleSearch}
-                className="w-full h-10 rounded-md"
+                className="w-full h-10 rounded-md bg-[#0a3622] hover:bg-[#0d4a2e] text-white"
               >
                 Apply Filters
               </Button>

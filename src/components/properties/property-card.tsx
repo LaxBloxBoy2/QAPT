@@ -54,7 +54,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
       </div>
 
       <CardContent className="p-5">
-        <h3 className="text-xl font-semibold mb-1 truncate group-hover:text-primary transition-colors">{property.name}</h3>
+        <h3 className="text-xl font-semibold mb-1 truncate group-hover:text-[#0a3622] transition-colors">{property.name}</h3>
         <p className="text-sm text-gray-500 mb-4 truncate">{formattedAddress}</p>
 
         <div className="grid grid-cols-2 gap-4 mb-5">
@@ -63,7 +63,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
             <div className="flex items-center">
               <div className="w-full bg-gray-200 rounded-full h-2 mr-2 dark:bg-gray-700">
                 <div
-                  className="bg-primary h-2 rounded-full"
+                  className="bg-[#0a3622] h-2 rounded-full"
                   style={{ width: `${occupancyPercentage}%` }}
                 ></div>
               </div>
@@ -90,7 +90,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
       </CardContent>
 
       <CardFooter className="p-5 pt-0">
-        <Button asChild className="w-full rounded-full">
+        <Button asChild className="w-full rounded-full bg-[#0a3622] hover:bg-[#0d4a2e] text-white">
           <Link href={`/dashboard/properties/${property.id}`}>
             View Property
           </Link>

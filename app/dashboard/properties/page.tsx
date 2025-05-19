@@ -16,13 +16,13 @@ export default async function PropertiesPage() {
           <p className="text-gray-500 mt-1">Manage your real estate portfolio</p>
         </div>
         <div className="flex gap-3">
-          <Button asChild size="lg" className="rounded-full shadow-sm bg-[#0a3622] hover:bg-[#0d4a2e] text-white">
+          <Button asChild size="lg" className="rounded-full shadow-sm">
             <Link href="/dashboard/properties/new" className="flex items-center gap-2">
               <Plus className="h-5 w-5" />
               Add Property
             </Link>
           </Button>
-          <Button variant="outline" size="lg" className="rounded-full border-[#0a3622] text-[#0a3622] hover:bg-[#0a3622]/10">
+          <Button variant="outline" size="lg" className="rounded-full">
             <Upload className="h-5 w-5 mr-2" />
             Import
           </Button>

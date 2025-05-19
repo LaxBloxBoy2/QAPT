@@ -1,6 +1,6 @@
 'use client'
 
-import { AppHeader } from '@/components/layout/app-header'
+import { Sidebar } from '@/components/layout/sidebar'
 
 export default function DashboardLayout({
   children,
@@ -8,9 +8,9 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
-      <AppHeader />
-      <main className="flex-1 container mx-auto py-8 px-4 md:px-6">
+    <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900">
+      <Sidebar />
+      <main className="flex-1 ml-[70px] lg:ml-[250px] p-6 md:p-8">
         {children}
       </main>
     </div>
