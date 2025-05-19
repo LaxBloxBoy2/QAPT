@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server-async'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { isPropertyOwner } from '@/lib/permissions'

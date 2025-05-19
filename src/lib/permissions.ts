@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server-async'
 import { CustomRole, RoleAssignment } from '@/types/database.types'
 
 // Define permission types
