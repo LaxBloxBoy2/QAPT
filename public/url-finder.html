@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Finder - Version 5</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: purple;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .info-box {
+            background-color: yellow;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .button {
+            background-color: white;
+            color: purple;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .url-list {
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .url-list a {
+            color: yellow;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .timestamp {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <h1>URL FINDER - VERSION 5</h1>
+    
+    <div class="info-box">
+        <p><strong>This is a static HTML file to help find the correct Vercel URL</strong></p>
+        <p><strong>If you can see this page with a PURPLE background and YELLOW box, you've found the correct URL!</strong></p>
+        <p><strong>Version:</strong> 5 - Purple Background</p>
+    </div>
+    
+    <div class="url-list">
+        <p>Try these other test pages to verify deployment:</p>
+        <a href="/test-page">/test-page</a>
+        <a href="/test.html">/test.html</a>
+        <a href="/dashboard">/dashboard</a>
+    </div>
+    
+    <div>
+        <a href="/" class="button">Go to Home</a>
+    </div>
+
+    <p class="timestamp">Timestamp: 2024-05-20 00:15:00</p>
+
+    <script>
+        // Display the current URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoBox = document.querySelector('.info-box');
+            const urlParagraph = document.createElement('p');
+            urlParagraph.innerHTML = `<strong>Current URL:</strong> ${window.location.href}`;
+            infoBox.appendChild(urlParagraph);
+        });
+    </script>
+</body>
+</html>

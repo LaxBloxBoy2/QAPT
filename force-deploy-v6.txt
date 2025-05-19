@@ -1,0 +1,9 @@
+This file is created to force a completely new deployment on Vercel.
+Timestamp: 2024-05-20 00:30:00
+Version: 6
+Layout: Simple sidebar with inline styles
+Changes:
+- Created simple-sidebar.tsx with inline styles
+- Updated dashboard layout to use the simple sidebar
+- Updated dashboard page with version 6 text
+- Using inline styles instead of Tailwind classes

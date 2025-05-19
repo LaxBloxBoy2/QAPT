@@ -1,12 +1,12 @@
 'use client'
 
-import CompletelyNewLayoutV2 from './completely_new_layout_v2'
+import SimpleSidebar from './simple-sidebar'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // This is version 2 with red sidebar
-  return <CompletelyNewLayoutV2>{children}</CompletelyNewLayoutV2>
+  // This is a simple sidebar layout with inline styles
+  return <SimpleSidebar>{children}</SimpleSidebar>
 }
