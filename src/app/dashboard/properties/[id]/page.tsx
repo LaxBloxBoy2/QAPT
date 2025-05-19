@@ -165,7 +165,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                       <h3 className="text-sm font-medium text-gray-500 mb-2">Features</h3>
                       <div className="flex flex-wrap gap-2">
                         {property.features && property.features.length > 0 ? (
-                          property.features.map((feature, index) => (
+                          property.features.map((feature: string, index: number) => (
                             <span key={index} className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm">
                               {feature}
                             </span>
@@ -180,7 +180,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                       <h3 className="text-sm font-medium text-gray-500 mb-2">Amenities</h3>
                       <div className="flex flex-wrap gap-2">
                         {property.amenities && property.amenities.length > 0 ? (
-                          property.amenities.map((amenity, index) => (
+                          property.amenities.map((amenity: string, index: number) => (
                             <span key={index} className="bg-primary/10 text-primary rounded-full px-3 py-1 text-sm">
                               {amenity}
                             </span>
@@ -203,7 +203,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   <CardContent>
                     {property.attachments && property.attachments.length > 0 ? (
                       <div className="space-y-2">
-                        {property.attachments.map((doc, index) => (
+                        {property.attachments.map((doc: string, index: number) => (
                           <div key={index} className="flex items-center justify-between p-2 border rounded-md">
                             <div className="flex items-center space-x-2">
                               <FileText className="h-4 w-4 text-primary" />
