@@ -30,12 +30,12 @@ export function TenantForm({ tenant, properties = [], propertyId, isEditing = fa
 
     try {
       const formData = new FormData(e.currentTarget)
-      
+
       // Add property ID if not already in the form
       if (!formData.has('propertyId') && selectedPropertyId) {
         formData.append('propertyId', selectedPropertyId)
       }
-      
+
       if (isEditing && tenant) {
         await updateTenant(tenant.id, formData)
       } else {
@@ -69,14 +69,14 @@ export function TenantForm({ tenant, properties = [], propertyId, isEditing = fa
                 <SelectContent>
                   {properties.map((property) => (
                     <SelectItem key={property.id} value={property.id}>
-                      {property.title}
+                      {property.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           )}
-          
+
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
             <Input
@@ -87,7 +87,7 @@ export function TenantForm({ tenant, properties = [], propertyId, isEditing = fa
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -98,7 +98,7 @@ export function TenantForm({ tenant, properties = [], propertyId, isEditing = fa
               placeholder="Tenant's email address"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="phone">Phone</Label>
             <Input
@@ -108,12 +108,12 @@ export function TenantForm({ tenant, properties = [], propertyId, isEditing = fa
               placeholder="Tenant's phone number"
             />
           </div>
-          
+
           {error && (
             <div className="text-red-500 text-sm">{error}</div>
           )}
         </CardContent>
-        
+
         <CardFooter className="flex justify-between">
           <Button
             type="button"
