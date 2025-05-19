@@ -6,8 +6,8 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold">Dashboard - UPDATED VERSION</h1>
-        <p className="text-muted-foreground mt-1">This is the updated version with sidebar layout</p>
+        <h1 className="text-3xl font-bold">NEW SIDEBAR LAYOUT - COMPLETELY DIFFERENT</h1>
+        <p className="text-muted-foreground mt-1">This is a completely new version with proper sidebar layout</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

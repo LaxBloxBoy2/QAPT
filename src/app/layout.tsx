@@ -28,6 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* FORCE NEW DEPLOYMENT - SIDEBAR LAYOUT */}
         <AuthProvider>
           {children}
         </AuthProvider>
