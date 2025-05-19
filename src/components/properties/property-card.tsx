@@ -25,6 +25,11 @@ export function PropertyCard({ property }: PropertyCardProps) {
     ? property.images[0]
     : '/placeholder-property.jpg'
 
+  // Handle image loading errors
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/placeholder-property.jpg'
+  }
+
   // Calculate occupancy percentage or use the provided one
   const occupancyPercentage = property.occupancy_percentage || 0
 
@@ -40,6 +45,8 @@ export function PropertyCard({ property }: PropertyCardProps) {
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          onError={handleImageError}
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <div className="absolute top-3 right-3">

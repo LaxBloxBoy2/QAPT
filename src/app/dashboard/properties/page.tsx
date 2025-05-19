@@ -7,7 +7,6 @@ import { PropertyGrid } from '@/components/properties/property-grid'
 import { PropertyFilters } from '@/components/properties/property-filters'
 import { Plus, Upload } from 'lucide-react'
 import { Property } from '@/types/database.types'
-import { createClient } from '@/lib/supabase/client'
 
 export default function PropertiesPage() {
   const [properties, setProperties] = useState<Property[]>([])
@@ -18,49 +17,14 @@ export default function PropertiesPage() {
     async function loadProperties() {
       try {
         setLoading(true)
-        const supabase = createClient()
 
-        // First check if user is authenticated
-        const { data: { user } } = await supabase.auth.getUser()
-        if (!user) {
-          setError('You must be logged in to view properties')
-          setLoading(false)
-          return
-        }
+        // Use mock data instead of trying to fetch from Supabase
+        const { mockProperties } = await import('@/lib/mock-data')
 
-        // Get properties owned by the user
-        const { data: ownedProperties, error: ownedError } = await supabase
-          .from('properties')
-          .select('*')
-          .eq('owner_id', user.id)
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 1000))
 
-        if (ownedError) {
-          throw new Error(ownedError.message)
-        }
-
-        // Get properties where the user has a role assignment
-        const { data: assignedProperties, error: assignedError } = await supabase
-          .from('role_assignments')
-          .select('properties(*)')
-          .eq('user_id', user.id)
-
-        if (assignedError) {
-          throw new Error(assignedError.message)
-        }
-
-        // Combine and deduplicate properties
-        const assignedPropertiesData = assignedProperties
-          .map(assignment => assignment.properties)
-          .filter(Boolean)
-
-        const allProperties = [...ownedProperties, ...assignedPropertiesData]
-
-        // Deduplicate by property ID
-        const uniqueProperties = Array.from(
-          new Map(allProperties.map(property => [property.id, property])).values()
-        )
-
-        setProperties(uniqueProperties)
+        setProperties(mockProperties)
         setLoading(false)
       } catch (err) {
         console.error('Error loading properties:', err)
