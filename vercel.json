@@ -7,7 +7,8 @@
   "cleanUrls": true,
   "git": {
     "deploymentEnabled": {
-      "main": true
+      "main": true,
+      "new-sidebar-layout": true
     }
   }
 }
