@@ -47,7 +47,7 @@ export default function DashboardLayout({
         <div className="p-6 border-b">
           <Link href="/dashboard" className="flex items-center space-x-2">
             <Building className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl">QAPT</span>
+            <span className="font-bold text-xl">QAPT - UPDATED</span>
           </Link>
         </div>
 
