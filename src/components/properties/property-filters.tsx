@@ -23,7 +23,7 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState<PropertyFilters>({
-    type: '',
+    type: '' as const,
     occupancyMin: undefined,
     occupancyMax: undefined,
     balanceMin: undefined,
@@ -41,7 +41,7 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
   }
 
   const clearFilters = () => {
-    const emptyFilters = {
+    const emptyFilters: PropertyFilters = {
       type: '',
       occupancyMin: undefined,
       occupancyMax: undefined,
@@ -65,8 +65,8 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
         </div>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           onClick={() => setShowFilters(!showFilters)}
           className="flex items-center gap-2"
         >
@@ -87,7 +87,7 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
               Clear
             </Button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="text-sm font-medium mb-1 block">Property Type</label>
@@ -105,7 +105,7 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div>
               <label className="text-sm font-medium mb-1 block">Occupancy %</label>
               <div className="flex gap-2">
@@ -127,7 +127,7 @@ export function PropertyFilters({ onSearch, onFilter }: PropertyFiltersProps) {
                 />
               </div>
             </div>
-            
+
             <div>
               <label className="text-sm font-medium mb-1 block">Balance (€)</label>
               <div className="flex gap-2">
