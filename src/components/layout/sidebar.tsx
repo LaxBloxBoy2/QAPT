@@ -37,9 +37,17 @@ export function Sidebar() {
   const { user, signOut } = useAuth()
   const [collapsed, setCollapsed] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Handle mounting state to avoid hydration issues
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Check if we're on mobile
   useEffect(() => {
+    if (!mounted) return
+
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 1024)
       if (window.innerWidth < 1024) {
@@ -53,7 +61,7 @@ export function Sidebar() {
     return () => {
       window.removeEventListener('resize', checkIfMobile)
     }
-  }, [])
+  }, [mounted])
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -64,6 +72,9 @@ export function Sidebar() {
   ]
 
   const userInitials = user?.email ? user.email.substring(0, 2).toUpperCase() : 'U'
+
+  // Don't render anything until mounted to avoid hydration issues
+  if (!mounted) return null
 
   return (
     <div className={cn(

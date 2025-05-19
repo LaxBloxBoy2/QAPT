@@ -20,7 +20,7 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (mounted && !isLoading && !user) {
-      router.push('/auth/signin')
+      router.push('/auth/login')
     }
   }, [user, isLoading, router, mounted])
 
@@ -33,11 +33,14 @@ export default function DashboardLayout({
     )
   }
 
-  // If we have a user, render the dashboard
+  // If we have a user, render the dashboard with sidebar
   if (user) {
     return (
       <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900">
+        {/* Sidebar - fixed position, always visible */}
         <Sidebar />
+
+        {/* Main content - adjusted margin to account for sidebar width */}
         <main className="flex-1 ml-[70px] lg:ml-[250px] p-6 md:p-8">
           {children}
         </main>
