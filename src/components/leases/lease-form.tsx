@@ -18,12 +18,12 @@ interface LeaseFormProps {
   isEditing?: boolean
 }
 
-export function LeaseForm({ 
-  lease, 
-  properties = [], 
-  tenants = [], 
-  propertyId, 
-  isEditing = false 
+export function LeaseForm({
+  lease,
+  properties = [],
+  tenants = [],
+  propertyId,
+  isEditing = false
 }: LeaseFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -32,7 +32,7 @@ export function LeaseForm({
   const [selectedTenantId, setSelectedTenantId] = useState(lease?.tenant_id || '')
 
   // Filter tenants by selected property
-  const filteredTenants = tenants.filter(tenant => 
+  const filteredTenants = tenants.filter(tenant =>
     tenant.property_id === selectedPropertyId && !tenant.lease_id
   )
 
@@ -51,17 +51,17 @@ export function LeaseForm({
 
     try {
       const formData = new FormData(e.currentTarget)
-      
+
       // Add property ID if not already in the form
       if (!formData.has('propertyId') && selectedPropertyId) {
         formData.append('propertyId', selectedPropertyId)
       }
-      
+
       // Add tenant ID if not already in the form
       if (!formData.has('tenantId') && selectedTenantId) {
         formData.append('tenantId', selectedTenantId)
       }
-      
+
       if (isEditing && lease) {
         await updateLease(lease.id, formData)
       } else {
@@ -95,14 +95,14 @@ export function LeaseForm({
                 <SelectContent>
                   {properties.map((property) => (
                     <SelectItem key={property.id} value={property.id}>
-                      {property.title}
+                      {property.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
           )}
-          
+
           <div className="space-y-2">
             <Label htmlFor="tenantId">Tenant</Label>
             <Select
@@ -129,7 +129,7 @@ export function LeaseForm({
               </p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="startDate">Start Date</Label>
             <Input
@@ -140,7 +140,7 @@ export function LeaseForm({
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="endDate">End Date</Label>
             <Input
@@ -151,7 +151,7 @@ export function LeaseForm({
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="rentAmount">Monthly Rent Amount</Label>
             <Input
@@ -165,12 +165,12 @@ export function LeaseForm({
               required
             />
           </div>
-          
+
           {error && (
             <div className="text-red-500 text-sm">{error}</div>
           )}
         </CardContent>
-        
+
         <CardFooter className="flex justify-between">
           <Button
             type="button"
@@ -180,8 +180,8 @@ export function LeaseForm({
           >
             Cancel
           </Button>
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={isSubmitting || (filteredTenants.length === 0 && !isEditing)}
           >
             {isSubmitting ? 'Saving...' : isEditing ? 'Update Lease' : 'Add Lease'}
