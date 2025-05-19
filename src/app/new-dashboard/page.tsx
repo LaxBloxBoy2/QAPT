@@ -2,12 +2,12 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default function DashboardPage() {
+export default function NewDashboardPage() {
   return (
     <div className="space-y-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-green-600">BLACK SIDEBAR LAYOUT - VERSION 2</h1>
-        <p className="text-gray-500 mt-1">This is version 2 with black sidebar and green accents</p>
+        <h1 className="text-3xl font-bold text-green-600">COMPLETELY NEW DASHBOARD WITH SIDEBAR</h1>
+        <p className="text-gray-500 mt-1">This is a completely new page with black sidebar and green accents</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -49,7 +49,7 @@ export default function DashboardPage() {
             <CardDescription>Latest payment activity</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground text-center py-6">No recent payments</p>
+            <p className="text-gray-500 text-center py-6">No recent payments</p>
           </CardContent>
         </Card>
 
@@ -59,7 +59,7 @@ export default function DashboardPage() {
             <CardDescription>Leases ending soon</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground text-center py-6">No upcoming lease expirations</p>
+            <p className="text-gray-500 text-center py-6">No upcoming lease expirations</p>
           </CardContent>
         </Card>
       </div>

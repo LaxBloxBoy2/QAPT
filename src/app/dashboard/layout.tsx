@@ -1,11 +1,12 @@
 'use client'
 
-import NewDashboardLayout from './new-layout'
+import SidebarLayout from './sidebar-layout'
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <NewDashboardLayout>{children}</NewDashboardLayout>
+  // This is a completely new implementation
+  return <SidebarLayout>{children}</SidebarLayout>
 }
