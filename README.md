@@ -1,4 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QAPT Property Management System
+
+A modern property management system built with Next.js 15 and Supabase.
+
+## Features
+
+- Property management
+- Tenant management
+- Lease tracking
+- Payment processing
+- Role-based access control
+- Team collaboration
+
+## Tech Stack
+
+- Next.js 15 with App Router
+- Supabase (PostgreSQL + Auth + RLS)
+- Tailwind CSS + ShadCN UI
+- TypeScript
 
 ## Getting Started
 
