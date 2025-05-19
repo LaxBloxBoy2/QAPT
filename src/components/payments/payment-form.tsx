@@ -17,17 +17,24 @@ interface PaymentFormProps {
   isEditing?: boolean
 }
 
-export function PaymentForm({ 
-  payment, 
-  leases = [], 
-  leaseId, 
-  isEditing = false 
+export function PaymentForm({
+  payment,
+  leases = [],
+  leaseId,
+  isEditing = false
 }: PaymentFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [selectedLeaseId, setSelectedLeaseId] = useState(leaseId || payment?.lease_id || '')
-  const [selectedStatus, setSelectedStatus] = useState(payment?.status || 'pending')
+  const [selectedStatus, setSelectedStatus] = useState<'pending' | 'paid' | 'overdue' | 'cancelled'>(payment?.status || 'pending')
+
+  // Handler for status change with type safety
+  const handleStatusChange = (value: string) => {
+    if (value === 'pending' || value === 'paid' || value === 'overdue' || value === 'cancelled') {
+      setSelectedStatus(value)
+    }
+  }
 
   const paymentStatuses = [
     { value: 'pending', label: 'Pending' },
@@ -43,17 +50,17 @@ export function PaymentForm({
 
     try {
       const formData = new FormData(e.currentTarget)
-      
+
       // Add lease ID if not already in the form
       if (!formData.has('leaseId') && selectedLeaseId) {
         formData.append('leaseId', selectedLeaseId)
       }
-      
+
       // Add status if not already in the form
       if (!formData.has('status') && selectedStatus) {
         formData.append('status', selectedStatus)
       }
-      
+
       if (isEditing && payment) {
         await updatePayment(payment.id, formData)
       } else {
@@ -95,7 +102,7 @@ export function PaymentForm({
               </Select>
             </div>
           )}
-          
+
           <div className="space-y-2">
             <Label htmlFor="amount">Payment Amount</Label>
             <Input
@@ -109,7 +116,7 @@ export function PaymentForm({
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="datePaid">Payment Date</Label>
             <Input
@@ -120,13 +127,13 @@ export function PaymentForm({
               required
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="status">Payment Status</Label>
             <Select
               name="status"
               value={selectedStatus}
-              onValueChange={setSelectedStatus}
+              onValueChange={handleStatusChange}
               required
             >
               <SelectTrigger>
@@ -141,12 +148,12 @@ export function PaymentForm({
               </SelectContent>
             </Select>
           </div>
-          
+
           {error && (
             <div className="text-red-500 text-sm">{error}</div>
           )}
         </CardContent>
-        
+
         <CardFooter className="flex justify-between">
           <Button
             type="button"
