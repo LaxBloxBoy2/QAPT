@@ -1,0 +1,4 @@
+# Only ignore node_modules and other standard files
+node_modules
+.git
+.github
