@@ -5,15 +5,16 @@ import { getProperty } from '@/app/actions/properties'
 import { notFound } from 'next/navigation'
 
 interface PropertyDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default async function PropertyDetailPage({ params }: PropertyDetailPageProps) {
   try {
-    const property = await getProperty(params.id)
-    
+    const resolvedParams = await params
+    const property = await getProperty(resolvedParams.id)
+
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
@@ -27,7 +28,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             </Button>
           </div>
         </div>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Property Details</CardTitle>
@@ -50,7 +51,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             </div>
           </CardContent>
         </Card>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
             <CardHeader>
@@ -65,7 +66,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               </Button>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Leases</CardTitle>
@@ -79,7 +80,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               </Button>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Team</CardTitle>
