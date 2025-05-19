@@ -42,10 +42,18 @@ const DEFAULT_PERMISSIONS: Record<string, Record<Permission, boolean>> = {
   },
 }
 
+// Define types for Supabase query results
+type RoleAssignmentWithJoins = {
+  role_id: string | null;
+  custom_role_id: string | null;
+  roles: { name: string } | null;
+  custom_roles: { name: string; permissions: Record<string, boolean> } | null;
+}
+
 // Get user's role for a specific property
 export async function getUserRoleForProperty(userId: string, propertyId: string) {
   const supabase = createClient()
-  
+
   const { data: roleAssignment, error } = await supabase
     .from('role_assignments')
     .select(`
@@ -56,20 +64,21 @@ export async function getUserRoleForProperty(userId: string, propertyId: string)
     `)
     .eq('user_id', userId)
     .eq('property_id', propertyId)
-    .single()
-  
+    .single() as { data: RoleAssignmentWithJoins | null; error: any }
+
   if (error || !roleAssignment) {
     return null
   }
-  
+
   if (roleAssignment.role_id) {
+    const roleName = roleAssignment.roles?.name || '';
     return {
       type: 'built-in',
-      name: roleAssignment.roles?.name || '',
-      permissions: DEFAULT_PERMISSIONS[roleAssignment.roles?.name || ''] || {},
+      name: roleName,
+      permissions: DEFAULT_PERMISSIONS[roleName] || {},
     }
   }
-  
+
   if (roleAssignment.custom_role_id) {
     return {
       type: 'custom',
@@ -77,7 +86,7 @@ export async function getUserRoleForProperty(userId: string, propertyId: string)
       permissions: roleAssignment.custom_roles?.permissions || {},
     }
   }
-  
+
   return null
 }
 
@@ -88,24 +97,24 @@ export async function hasPermission(
   permission: Permission
 ): Promise<boolean> {
   const role = await getUserRoleForProperty(userId, propertyId)
-  
+
   if (!role) {
     return false
   }
-  
+
   return !!role.permissions[permission]
 }
 
 // Check if user is the owner of a property
 export async function isPropertyOwner(userId: string, propertyId: string): Promise<boolean> {
   const supabase = createClient()
-  
+
   const { data, error } = await supabase
     .from('properties')
     .select('owner_id')
     .eq('id', propertyId)
     .eq('owner_id', userId)
     .single()
-  
+
   return !error && !!data
 }
